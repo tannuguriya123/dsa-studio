@@ -58,6 +58,9 @@ export const TreeFlowRenderer: React.FC<{ frame: ExecutionFrame }> = ({ frame })
   }, [tree]);
 
   if (!tree) return null;
+  const structureKey = `${tree.rootId ?? "null"}:${tree.nodes
+    .map((node) => `${node.id}:${node.leftId ?? "-"}:${node.rightId ?? "-"}`)
+    .join("|")}`;
 
   return (
     <div className="space-y-3">
@@ -67,7 +70,14 @@ export const TreeFlowRenderer: React.FC<{ frame: ExecutionFrame }> = ({ frame })
             Tree is empty (ROOT = NULL)
           </div>
         ) : (
-          <ReactFlow nodes={nodes} edges={edges} fitView nodesDraggable={false}>
+          <ReactFlow
+            key={structureKey}
+            nodes={nodes}
+            edges={edges}
+            fitView
+            nodesDraggable={false}
+            nodesConnectable={false}
+          >
             <Background color="#1e293b" gap={18} />
             <Controls />
           </ReactFlow>

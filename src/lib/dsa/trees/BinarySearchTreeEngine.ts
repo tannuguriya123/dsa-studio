@@ -22,6 +22,13 @@ export class BinarySearchTreeEngine {
     for (const v of initialValues) {
       this.root = this.insertSilent(this.root, v);
     }
+    this.recorder.record({
+      tag: "init",
+      action: "INIT",
+      description: "Initialized BST with the values in the sandbox.",
+      variables: { values: initialValues.join(", ") },
+      snapshot: this.layoutNodes(),
+    });
   }
 
   private insertSilent(node: BSTNode | null, val: number): BSTNode {
@@ -101,9 +108,29 @@ export class BinarySearchTreeEngine {
       }
 
       if (val < node.value) {
+        const previousLeft = node.left;
         node.left = insertRec(node.left);
+        if (!previousLeft && node.left) {
+          this.recorder.record({
+            tag: "step1",
+            action: "PUSH_FRAME",
+            description: `Attached new node ${val} to the left of node ${node.value}.`,
+            variables: { inserted: val, parent: node.value, direction: "LEFT" },
+            snapshot: this.layoutNodes([node.left.id]),
+          });
+        }
       } else {
+        const previousRight = node.right;
         node.right = insertRec(node.right);
+        if (!previousRight && node.right) {
+          this.recorder.record({
+            tag: "step1",
+            action: "PUSH_FRAME",
+            description: `Attached new node ${val} to the right of node ${node.value}.`,
+            variables: { inserted: val, parent: node.value, direction: "RIGHT" },
+            snapshot: this.layoutNodes([node.right.id]),
+          });
+        }
       }
       return node;
     };
@@ -143,6 +170,8 @@ export class BinarySearchTreeEngine {
   }
 
   public deleteNode(val: number): void {
+    let deletionOccurred = false;
+
     const findMin = (node: BSTNode): BSTNode => {
       let curr = node;
       while (curr.left) curr = curr.left;
@@ -179,6 +208,7 @@ export class BinarySearchTreeEngine {
           variables: { deleted: node.value, caseType: "LEAF" },
           snapshot: this.layoutNodes([node.id]),
         });
+        deletionOccurred = true;
         return null;
       }
 
@@ -191,6 +221,7 @@ export class BinarySearchTreeEngine {
           variables: { deleted: node.value, promoted: child!.value, caseType: "ONE_CHILD" },
           snapshot: this.layoutNodes([node.id, child!.id]),
         });
+        deletionOccurred = true;
         return child;
       }
 
@@ -206,10 +237,20 @@ export class BinarySearchTreeEngine {
       node.value = succ.value;
       node.id = `bst-${succ.value}`;
       node.right = this.deleteSuccessorSilent(node.right, succ.value);
+      deletionOccurred = true;
       return node;
     };
 
     this.root = delRec(this.root);
+    if (deletionOccurred) {
+      this.recorder.record({
+        tag: "done",
+        action: "COMPLETE",
+        description: `Deletion complete: node ${val} removed from the BST.`,
+        variables: { val, deleted: true },
+        snapshot: this.layoutNodes(),
+      });
+    }
   }
 
   private deleteSuccessorSilent(node: BSTNode | null, key: number): BSTNode | null {
