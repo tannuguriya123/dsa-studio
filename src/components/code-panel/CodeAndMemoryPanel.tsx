@@ -29,21 +29,21 @@ export const CodeAndMemoryPanel: React.FC = () => {
           <span className="text-xs font-mono text-slate-300 font-semibold">
             {method.label} · {method.timeComplexity}
           </span>
-          <div className="flex gap-1">
-            {LANG_LABELS.map((l) => (
-              <button
-                key={l.id}
-                onClick={() => setLanguage(l.id)}
-                className={`px-2.5 py-1 rounded text-xs font-mono transition ${
-                  language === l.id
-                    ? "bg-indigo-600 text-white"
-                    : "bg-slate-800 text-slate-400 hover:text-slate-200"
-                }`}
-              >
-                {l.label}
-              </button>
-            ))}
-          </div>
+          <label className="flex items-center gap-2 text-xs font-mono text-slate-400">
+            <span>Language:</span>
+            <select
+              value={language}
+              onChange={(event) => setLanguage(event.target.value as SupportedLanguage)}
+              aria-label="Select code language"
+              className="rounded-md border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-xs font-mono font-semibold text-slate-100 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20"
+            >
+              {LANG_LABELS.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
         <div className="p-3 font-mono text-xs overflow-x-auto">
