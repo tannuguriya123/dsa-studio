@@ -99,11 +99,11 @@ export const PlaybackAndSandboxControls: React.FC = () => {
         </div>
       </div>
 
-      <div className="rounded-xl border-2 border-amber-400/40 bg-slate-900/70 p-4 space-y-3 shadow-[0_12px_32px_rgba(245,158,11,0.06)] ring-1 ring-amber-300/10">
+      <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4 space-y-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <div className="flex items-center gap-2 rounded-lg border border-amber-400/30 bg-amber-500/10 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-amber-300">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-300">
             <FlaskConical className="w-4 h-4" />
-            Method &amp; Mutation Sandbox
+            Method & Break/Mutate Sandbox
           </div>
           <div className="flex flex-wrap gap-1.5">
             {topic.methods.map((m) => (
@@ -122,19 +122,14 @@ export const PlaybackAndSandboxControls: React.FC = () => {
           </div>
         </div>
 
-        <div>
-          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-sky-300">
-            <span className="h-px w-5 bg-sky-400/50" />
-            Trace Inputs: Values, Index &amp; Target
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 rounded-xl border-2 border-sky-400/30 bg-sky-950/25 p-3 text-xs shadow-[0_8px_24px_rgba(14,165,233,0.08)]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
           {topicId !== "pointers-heap" && topicId !== "recursion" && (
             <label className="flex flex-col gap-1">
-              <span className="font-bold uppercase tracking-wide text-sky-300">Elements (comma separated)</span>
+              <span className="text-slate-400">Elements (comma separated)</span>
               <input
                 value={valuesInput}
                 onChange={(e) => updateSandboxField({ valuesInput: e.target.value })}
-                className="rounded-lg bg-slate-950 border-2 border-sky-400/25 px-2.5 py-2 font-mono text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/20"
+                className="rounded bg-slate-950 border border-slate-700 px-2.5 py-1.5 font-mono text-slate-100"
               />
             </label>
           )}
@@ -142,27 +137,27 @@ export const PlaybackAndSandboxControls: React.FC = () => {
           {topicId === "pointers-heap" && (
             <>
               <label className="flex flex-col gap-1">
-                <span className="font-bold uppercase tracking-wide text-sky-300">Pointer Name</span>
+                <span className="text-slate-400">Pointer Name</span>
                 <input
                   value={pointerName}
                   onChange={(e) => updateSandboxField({ pointerName: e.target.value })}
-                  className="rounded-lg bg-slate-950 border-2 border-sky-400/25 px-2.5 py-2 font-mono text-slate-100 outline-none focus:border-sky-400"
+                  className="rounded bg-slate-950 border border-slate-700 px-2.5 py-1.5 font-mono text-slate-100"
                 />
               </label>
               <label className="flex flex-col gap-1">
-                <span className="font-bold uppercase tracking-wide text-sky-300">Bytes / Element Size</span>
+                <span className="text-slate-400">Bytes / Element Size</span>
                 <input
                   value={bytesInput}
                   onChange={(e) => updateSandboxField({ bytesInput: e.target.value })}
-                  className="rounded-lg bg-slate-950 border-2 border-sky-400/25 px-2.5 py-2 font-mono text-slate-100 outline-none focus:border-sky-400"
+                  className="rounded bg-slate-950 border border-slate-700 px-2.5 py-1.5 font-mono text-slate-100"
                 />
               </label>
               <label className="flex flex-col gap-1">
-                <span className="font-bold uppercase tracking-wide text-sky-300">Element Count</span>
+                <span className="text-slate-400">Element Count</span>
                 <input
                   value={countInput}
                   onChange={(e) => updateSandboxField({ countInput: e.target.value })}
-                  className="rounded-lg bg-slate-950 border-2 border-sky-400/25 px-2.5 py-2 font-mono text-slate-100 outline-none focus:border-sky-400"
+                  className="rounded bg-slate-950 border border-slate-700 px-2.5 py-1.5 font-mono text-slate-100"
                 />
               </label>
             </>
@@ -170,35 +165,34 @@ export const PlaybackAndSandboxControls: React.FC = () => {
 
           {topicId === "recursion" && (methodId === "factorial" || methodId === "fibonacci") && (
             <label className="flex flex-col gap-1">
-              <span className="font-bold uppercase tracking-wide text-sky-300">Recursion Input (n)</span>
+              <span className="text-slate-400">Recursion Input (n)</span>
               <input
                 value={recursionArg}
                 onChange={(e) => updateSandboxField({ recursionArg: e.target.value })}
-                className="rounded-lg bg-slate-950 border-2 border-sky-400/25 px-2.5 py-2 font-mono text-slate-100 outline-none focus:border-sky-400"
+                className="rounded bg-slate-950 border border-slate-700 px-2.5 py-1.5 font-mono text-slate-100"
               />
             </label>
           )}
 
           {(topicId === "arrays" || topicId === "linked-list" || topicId === "pointers-heap") && (
             <label className="flex flex-col gap-1">
-              <span className="font-bold uppercase tracking-wide text-amber-300">Index / Offset</span>
+              <span className="text-slate-400">Index / Offset</span>
               <input
                 value={indexInput}
                 onChange={(e) => updateSandboxField({ indexInput: e.target.value })}
-                className="rounded-lg bg-slate-950 border-2 border-amber-400/40 px-2.5 py-2 font-mono text-amber-100 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                className="rounded bg-slate-950 border border-slate-700 px-2.5 py-1.5 font-mono text-slate-100"
               />
             </label>
           )}
 
           <label className="flex flex-col gap-1">
-            <span className="font-bold uppercase tracking-wide text-emerald-300">Target / Value</span>
+            <span className="text-slate-400">Target / Value</span>
             <input
               value={targetInput}
               onChange={(e) => updateSandboxField({ targetInput: e.target.value })}
-              className="rounded-lg bg-slate-950 border-2 border-emerald-400/35 px-2.5 py-2 font-mono text-emerald-100 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+              className="rounded bg-slate-950 border border-slate-700 px-2.5 py-1.5 font-mono text-slate-100"
             />
           </label>
-          </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
