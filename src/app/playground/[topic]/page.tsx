@@ -53,13 +53,15 @@ function PlaygroundContent() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 font-mono text-xs">
-          <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-emerald-300">
-            Time: {method.timeComplexity}
-          </span>
-          <span className="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-sky-300">
-            Space: {method.spaceComplexity}
-          </span>
+        <div className="flex items-center gap-2.5 font-mono text-xs">
+          <div className="min-w-[118px] rounded-lg border border-emerald-400/50 bg-emerald-500/10 px-3 py-2 shadow-[0_0_18px_rgba(16,185,129,0.10)]">
+            <div className="mb-0.5 text-[9px] font-bold uppercase tracking-[0.18em] text-emerald-400/80">Time</div>
+            <div className="font-bold text-emerald-200">{method.timeComplexity}</div>
+          </div>
+          <div className="min-w-[118px] rounded-lg border border-sky-400/50 bg-sky-500/10 px-3 py-2 shadow-[0_0_18px_rgba(56,189,248,0.10)]">
+            <div className="mb-0.5 text-[9px] font-bold uppercase tracking-[0.18em] text-sky-400/80">Space</div>
+            <div className="font-bold text-sky-200">{method.spaceComplexity}</div>
+          </div>
         </div>
       </div>
 
