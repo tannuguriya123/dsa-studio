@@ -14,7 +14,9 @@ export default function HomePage() {
           Real execution engine
         </span>
         <h1 className="studio-title">
-          Understand algorithms.<span className="studio-title-accent"> See every step.</span>
+          Understand algorithms.
+          <br />
+          <span className="studio-title-accent">See every step.</span>
         </h1>
         <p className="studio-description">
           Inspect live pointer addresses, heap allocations, call stacks, tree rotations/deletions, and
