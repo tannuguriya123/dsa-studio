@@ -17,7 +17,7 @@ function PlaygroundContent() {
   const rawTopic = params?.topic as TopicId | undefined;
   const validTopicId: TopicId = rawTopic && rawTopic in DSA_TOPICS ? rawTopic : "arrays";
 
-  const { topicId, initTopic, frames, currentStep, isPlaying, speedMs, stepForward, methodId } =
+  const { topicId, initTopic, frames, currentStep, isPlaying, speedMs, stepForward, setStep, methodId } =
     useVisualizerStore();
 
   useEffect(() => {
@@ -65,24 +65,45 @@ function PlaygroundContent() {
 
       <PlaybackAndSandboxControls />
 
-      {currentFrame && (
-        <div
-          className={`rounded-lg border px-4 py-2.5 text-xs font-mono flex items-center gap-2.5 ${
-            currentFrame.isError
-              ? "border-rose-500/60 bg-rose-950/30 text-rose-200"
-              : currentFrame.isWarning
-              ? "border-amber-500/60 bg-amber-950/30 text-amber-200"
-              : "border-slate-800 bg-slate-900/70 text-slate-200"
-          }`}
-        >
-          {currentFrame.isError ? (
-            <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
-          ) : currentFrame.isWarning ? (
-            <Info className="w-4 h-4 text-amber-400 shrink-0" />
-          ) : (
-            <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
-          )}
-          <span>{currentFrame.description}</span>
+      {frames.length > 0 && (
+        <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-3">
+          <div className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span>Execution Trace</span>
+            <span className="font-mono text-slate-500">
+              Step {currentStep + 1}/{frames.length}
+            </span>
+          </div>
+          <div className="max-h-36 overflow-y-auto pr-1">
+            {frames.map((frame, index) => {
+              const isCurrent = index === currentStep;
+              return (
+                <button
+                  key={`${frame.step}-${index}`}
+                  type="button"
+                  onClick={() => setStep(index)}
+                  className={`w-full flex items-start gap-2.5 px-2 py-1.5 text-left text-xs font-mono leading-5 rounded-md transition ${
+                    isCurrent
+                      ? "bg-indigo-500/20 text-white"
+                      : frame.isError
+                      ? "text-rose-200 hover:bg-rose-950/30"
+                      : frame.isWarning
+                      ? "text-amber-200 hover:bg-amber-950/20"
+                      : "text-slate-300 hover:bg-slate-800/70"
+                  }`}
+                >
+                  {frame.isError ? (
+                    <AlertTriangle className="w-4 h-4 mt-0.5 text-rose-400 shrink-0" />
+                  ) : frame.isWarning ? (
+                    <Info className="w-4 h-4 mt-0.5 text-amber-400 shrink-0" />
+                  ) : (
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 text-indigo-400 shrink-0" />
+                  )}
+                  <span className="shrink-0 text-slate-500">{index + 1}.</span>
+                  <span className="whitespace-normal">{frame.description}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 
